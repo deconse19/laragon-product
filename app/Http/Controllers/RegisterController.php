@@ -22,8 +22,9 @@ class RegisterController extends Controller
                 'email' => $request->email,
                 'password' => $request->password,
             ]);
+            //kmjnjnnjnjn
 
-            Mail::to($request->email)->send(new VerificationMail($user));
+            Mail::to($request->email)->send(new VerificationMail($user));//aaaaa
 
             DB::commit();
             return response()->json([
