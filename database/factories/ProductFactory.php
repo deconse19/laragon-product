@@ -18,10 +18,11 @@ class ProductFactory extends Factory
     {
         return [
             
-            'name' => $this->faker->name,
-            'price' => $this->faker->randomDigit(),
-            'description' => $this->faker->text,
-            'category' =>$this->faker->word
+            // 'name' => $this->faker->productName,
+            // 'price' => $this->faker->randomDigitNotNull(),
+            // 'description' => $this->faker->text,
+            // 'category' =>$this->faker->word,
+            // 'confirmed'=>$this->faker->boolean()
             
 
         ];

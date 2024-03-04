@@ -22,11 +22,13 @@ class AddRequest extends FormRequest
     public function rules(): array
     {
         return [
-           
             'name' => 'required',
-            'price' => 'required|numeric|decimal:2,4'
-
+            'price' => 'required|numeric|decimal:2',
+            'description' => 'nullable',
+            'category' => 'nullable',
+            'confirmed' => 'required|boolean'
 
         ];
+        
     }
 }

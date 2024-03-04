@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class  FindProductRequest extends FormRequest
+class UserLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,11 @@ class  FindProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'nullable',
-            'name' => 'nullable',
-            'price' => 'nullable',
-            'description' => 'nullable',
-            'category' => 'nullable'
+            
+            'email' => 'required|email',
+            'password' =>'required',
+            
+            
         ];
     }
 }

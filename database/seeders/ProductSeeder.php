@@ -19,34 +19,59 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         
-        Product::factory()->count(10)->create();
-        // DB::table('products')->insert([
-            
-        // [   'name'=>'Star',
-        //     'price' =>67.00,
-        //     'description'=>'yieee',
-        //     'created_at' =>Carbon::now(),
-        //     'updated_at' =>Carbon::now(),
-        // ],
-        // [   'name'=>'asdfasd',
-        //     'price' =>67.00,
-        //     'description'=> 'yieee',
-        //     'created_at' =>Carbon::now(),
-        //     'updated_at' =>Carbon::now(),
-        // ],
-        // [   'name'=>'asdfaffffffffff',
-        //     'price' =>67.00,
-        //     'description'=> 'yieee',
-        //     'created_at' =>Carbon::now(),
-        //     'updated_at' =>Carbon::now(),
-        // ],
-        // [   'name'=>'aaaaaaaaaaaa',
-        //     'price' =>67.00,
-        //     'description'=> 'yieee',
-        //     'created_at' =>Carbon::now(),
-        //     'updated_at' =>Carbon::now(),
-        // ],
+        $products = [
+            [
+                'name' => 'mouse',
+                'description' => 'Description for Product 1',
+                'price' => 10.99,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'confirmed'=> true
+            ],
+            [
+                'name' => 'keyboard',
+                'description' => 'Description for Product 1',
+                'price' => 10.99,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'confirmed'=> false
+            ],
+            [
+                'name' => 'eyebrow',
+                'description' => 'Description for Product 3',
+                'price' => 10.99,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'confirmed'=> true
+            ],
+            [
+                'name' => 'ball',
+                'description' => 'Description for Product 4',
+                'price' => 19.99,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'confirmed'=> true
+            ],[
+                'name' => 'desktop',
+                'description' => 'Description for Product 5',
+                'price' => 10.99,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'confirmed'=> false
+            ],
+            [
+                'name' => 'bread',
+                'description' => 'Description for Product 6',
+                'price' => 19.99,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'confirmed'=> false
+            ],
+            // Add more products as needed
+        ];
 
-        // ]);
+        // Insert the products into the database
+        DB::table('products')->insert($products);
+       
     }
 }

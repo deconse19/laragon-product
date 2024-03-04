@@ -12,49 +12,71 @@ class ProductController extends Controller
 
     public function index(FindProductRequest $request)
     {
-
         $list = Product::when($request->search, function ($query, $search) {
-                $query->where('id', 'LIKE', "%{$search}%")
-                    ->orWhere('name', 'LIKE', "%{$search}%")
-                    ->orWhere('price', 'LIKE', "%{$search}%")
-                    ->orWhere('description', 'LIKE', "%{$search}%")
-                    ->orWhere('category', 'LIKE', "%{$search}%");
-            })
-            ->get();
+            $query->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('price', "%{$search}%")
+                ->orWhere('description', 'LIKE', "%{$search}%")
+                ->orWhere('category', 'LIKE', "%{$search}%")
+                ->orWhere('confirmed', 'LIKE', "%{$search}%");
+        })->paginate($request->per_page ?? 15);
 
-
-        return response()->json($list);
+        return response()->json(
+            [
+                'message' => 'List of Products',
+                'data' => $list
+            ]
+        );
     }
 
     public function add(AddRequest $request)
     {
+        try {
 
-        $request->validated();
+            $list = Product::create([
+                'name' => $request->name,
+                'price' => $request->price,
+                'description' => $request->description,
+                'category' => $request->category,
+                'confirmed' => $request->confirmed
+            ]);
 
-        $list = Product::create([
-            'name' => $request->name,
-            'price' => $request->price,
-            'description' => $request->description,
-            'category' => $request->category
-        ]);
+            return response()->json([
+                'message' => 'Success',
+                'status' => $list
 
-        return response()->json($list);
+            ]);
+        } catch (\Exception $th) {
+            return response()->json([
+                'message' => $th->getMessage()
+            ], 422);
+        }
     }
 
     public function edit(AddRequest $request)
     {
 
-        $request->validated();
+        try {
+            $list = Product::find($request->id);
 
-        $list = Product::find($request->id);
+           $list = $list->update([
+                'name' => $request->name,
+                'price' => $request->price,
+                'description' => $request->description,
+                'category' => $request->category,
+                'confirmed' => $request->confirmed
+                
+            ]);
 
-        $list->update([
-            'name' => $request->name,
-            'price' => $request->price,
-            'description' => $request->description
-        ]);
+            return response()->json([
+                'message' => 'Product successfully edited',
+                'data' => $list
+            ]);
+        } catch (\Exception $e) {
 
-        return response()->json($list);
+            return response()->json([
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     public function delete(Request $request)
@@ -62,12 +84,33 @@ class ProductController extends Controller
 
         $list = Product::find($request->id);
 
-        $list->delete();
+        $list->softDelete();
 
         return response()->json([
-            'message' => 'Deleted',
+            'message' => 'Product Deleted',
             'status' => $list
 
         ]);
     }
+
+    public function restoreDelete(Request $request)
+    {
+
+        $list = Product::withTrashed()->find($request->id);
+
+        $list->restore();
+
+        return response()->json([
+            'message' => 'Product Restored',
+            'status' => $list
+
+        ]);
+    }
+
+    // public function showProducts()
+    // {
+
+    //     $list = Product::latest()->get();
+    //     return view("product.welcome", compact('list'));
+    // }
 }
