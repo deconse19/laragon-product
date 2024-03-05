@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DepartmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +28,7 @@ use App\Http\Controllers\RegisterController;
 
 Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [RegisterController::class, 'login']);
-// Route::post('send', [RegisterController::class, 'sendEmail']);
+
 
 
 Route::group(['prefix'=>'product','middleware'=>'auth:api'],function(){
@@ -37,5 +40,19 @@ Route::group(['prefix'=>'product','middleware'=>'auth:api'],function(){
 });
 
 
+Route::group(['prefix'=>'user','middleware'=>'auth:api'],function(){
 
-  
+    // Route::post('login', [UserProfileController::class, 'login']);
+});
+
+// Route::post('login', [RegisterController::class, 'login']);
+
+
+Route::group(['prefix'=>'user','middleware'=>'auth:api'],function(){
+    Route::post('/', [UserController::class, 'searchUser']);
+    Route::post('/create', [UserController::class, 'createUserProfile']);
+    Route::delete('/delete', [UserController::class, 'userDelete']);
+    
+});
+
+Route::post('create_department', [DepartmentController::class, 'createDepartment']);

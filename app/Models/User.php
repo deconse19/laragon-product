@@ -20,6 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
+        'department_id',
         'name',
         'email',
         'password',
@@ -59,9 +60,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     
 
-    public function user(){
+    public function userProfile(){
 
         return $this->hasOne(UserProfile::class);
+    }
+
+    public function department(){
+
+        return $this->belongsTo(Department::class);
     }
 }
 

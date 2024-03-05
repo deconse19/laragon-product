@@ -18,13 +18,12 @@ class RegisterController extends Controller
         DB::beginTransaction();
         try {
             $user = User::create([
+                'department_id' => $request->department_id,
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => $request->password,
             ]);
-            //kmjnjnnjnjn
-
-            Mail::to($request->email)->send(new VerificationMail($user));//aaaaa
+            Mail::to($request->email)->send(new VerificationMail($user));
 
             DB::commit();
             return response()->json([
@@ -32,7 +31,7 @@ class RegisterController extends Controller
                 'status'    => $user
             ]);
         } catch (\Exception $e) {
-
+ 
             DB::rollBack();
             return response()->json([
                 'message' => $e->getMessage()
@@ -57,7 +56,7 @@ class RegisterController extends Controller
             $profile = $success['name'];
 
             return response()->json([
-                'message' => 'Welcome user',
+                'message' => 'Welcome '. $user->name,
                 'status' => $profile,
                 'token' => $token
             ]);
@@ -68,4 +67,6 @@ class RegisterController extends Controller
             ]);
         }
     }
+
+    
 }
