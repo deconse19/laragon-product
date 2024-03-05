@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest\AddRequest;
+use App\Http\Requests\ProductRequest\EditRequest;
 use App\Models\Product;
-use App\Http\Requests\FindProductRequest;
-use App\Http\Requests\AddRequest;
+
+use App\Http\Requests\ProductRequest\FindRequest;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
 
-    public function index(FindProductRequest $request)
+    public function index(FindRequest $request)
     {
         $list = Product::when($request->search, function ($query, $search) {
             $query->where('name', 'LIKE', "%{$search}%")
                 ->orWhere('price', "%{$search}%")
-                ->orWhere('description', 'LIKE', "%{$search}%")
-                ->orWhere('category', 'LIKE', "%{$search}%")
-                ->orWhere('confirmed', 'LIKE', "%{$search}%");
+                ->orWhere('description', 'LIKE', "%{$search}%");
+               
         })->paginate($request->per_page ?? 15);
 
         return response()->json(
@@ -37,7 +38,7 @@ class ProductController extends Controller
                 'price' => $request->price,
                 'description' => $request->description,
                 'category' => $request->category,
-                'confirmed' => $request->confirmed
+               
             ]);
 
             return response()->json([
@@ -52,7 +53,7 @@ class ProductController extends Controller
         }
     }
 
-    public function edit(AddRequest $request)
+    public function edit(EditRequest $request)
     {
 
         try {

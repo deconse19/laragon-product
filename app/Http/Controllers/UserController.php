@@ -2,29 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\UserRequest\AddProductRequest;
+use App\Http\Requests\UserRequest\CreateProfileRequest;
+use App\Http\Requests\UserRequest\DeleteProfileRequest;
+use App\Http\Requests\UserRequest\SearchRequest;
+use App\Models\Product;
 use App\Models\User;
 use App\Models\UserProfile;
-use GuzzleHttp\Psr7\Request;
+
 
 class UserController extends Controller
 
 {
 
-    public function searchUser(UserRequest $request){
-       $user = User::with('userProfile','department')->find($request->user_id);
+    public function searchUser(SearchRequest $request)
+    {
+        $user = User::with('userProfile', 'department')->find($request->user_id);
 
-       return response()->json([
-        
-        'user'=>$user,
-       
-    
-    ]);
-
-
+        return response()->json($user);
     }
 
-    public function createUserProfile(UserRequest $request)
+    public function createUserProfile(CreateProfileRequest $request)
     {
         $user = UserProfile::updateOrCreate([
             'user_id' => $request->user_id,
@@ -39,7 +37,7 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function userDelete(UserRequest $request)
+    public function userDeleteProfile(DeleteProfileRequest $request)
     {
 
         $list = UserProfile::find($request->id);
@@ -52,4 +50,20 @@ class UserController extends Controller
 
         ]);
     }
+
+    public function addProduct(AddProductRequest $request){
+        $user = User::findOrFail($request->user_id);
+       
+        $product_id = $request->product_id;
+        $user->product()->sync($product_id);
+        $product = Product::findOrFail($product_id);
+
+        return response()->json([$user,$product]);
+
+    }
+    // public function removeProduct(){
+    //     $user = User::findOrFail($request->user_id);
+
+    // }
 }
+ 

@@ -34,9 +34,14 @@ class Product extends Model
 
     protected $casts=[
 
-        'confirmed' => 'boolean'
+        
 
     ];
+
+    public function user(){
+
+        return $this->belongsToMany(User::class);
+    }
   
    
     

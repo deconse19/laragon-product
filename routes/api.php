@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserProductController;
 use App\Http\Controllers\UserProfileController;
 
 /*
@@ -51,8 +52,11 @@ Route::group(['prefix'=>'user','middleware'=>'auth:api'],function(){
 Route::group(['prefix'=>'user','middleware'=>'auth:api'],function(){
     Route::post('/', [UserController::class, 'searchUser']);
     Route::post('/create', [UserController::class, 'createUserProfile']);
-    Route::delete('/delete', [UserController::class, 'userDelete']);
+    Route::delete('/delete_user', [UserController::class, 'userDeleteProfile']);
+    Route::post('/add_product', [UserController::class, 'addProduct']);
     
 });
 
 Route::post('create_department', [DepartmentController::class, 'createDepartment']);
+
+

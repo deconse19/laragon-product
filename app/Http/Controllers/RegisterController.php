@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserLoginRequest;
-use App\Http\Requests\UserRegisterRequest;
+use App\Http\Requests\UserRequest\LoginRequest;
+use App\Http\Requests\UserRequest\RegisterRequest;
 use App\Mail\VerificationMail;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
-    public function register(UserRegisterRequest $request)
+    public function register(RegisterRequest $request)
     {
         DB::beginTransaction();
         try {
@@ -39,7 +39,7 @@ class RegisterController extends Controller
         }
     }
 
-    public function login(UserLoginRequest $request)
+    public function login(LoginRequest $request)
     {
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
@@ -67,6 +67,7 @@ class RegisterController extends Controller
             ]);
         }
     }
+    
 
     
 }

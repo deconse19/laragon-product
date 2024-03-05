@@ -19,22 +19,6 @@ class DepartmentController extends Controller
         return response()->json($user);
     }
 
-    // public function updateUserDepartment(UserRequest $request){
-
-    //     $department=Department::findOrFail($request->id);
-
-    //     $user -= User::update([
-    //         'department_id' => $request->department_id,
-    //         'user_id' => $request->user_id,
-    //         'name' => $request->name,
-    //         'age' => $request->age,
-    //         'gender' => $request->gender,
-    //         'address' => $request->address,
-    //         'status' => $request->status,
-    //         'phone' => $request->phone,
-    //     ]);
-
-    //     return response()->json($user);
-    // }
+   
 
 }
