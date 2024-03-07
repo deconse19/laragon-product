@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,33 +31,30 @@ use App\Http\Controllers\UserProfileController;
 Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [RegisterController::class, 'login']);
 
-
-
-Route::group(['prefix'=>'product','middleware'=>'auth:api'],function(){
-    Route::post('/', [ProductController::class, 'index'])->name('index');
-    Route::post('/add', [ProductController::class, 'add'])->name('add');
-    Route::post('/edit', [ProductController::class, 'edit'])->name('edit');
-    Route::delete('/delete', [ProductController::class, 'delete'])->name('delete');
-    Route::post('/restore', [ProductController::class, 'restoreDelete'])->name('restore');
-});
-
-
-Route::group(['prefix'=>'user','middleware'=>'auth:api'],function(){
-
-    // Route::post('login', [UserProfileController::class, 'login']);
-});
-
-// Route::post('login', [RegisterController::class, 'login']);
-
-
 Route::group(['prefix'=>'user','middleware'=>'auth:api'],function(){
     Route::post('/', [UserController::class, 'searchUser']);
     Route::post('/create', [UserController::class, 'createUserProfile']);
     Route::delete('/delete_user', [UserController::class, 'userDeleteProfile']);
-    Route::post('/add_product', [UserController::class, 'addProduct']);
-    
+    Route::post('/purchase', [UserController::class, 'purchase']);
+    Route::post('/logout', [RegisterController::class, 'logout']);
 });
 
-Route::post('create_department', [DepartmentController::class, 'createDepartment']);
+
+    
+Route::group(['prefix'=>'company'],function(){
+    Route::post('/', [CompanyController::class, 'index']);
+    Route::post('/add', [CompanyController::class, 'add']);
+    Route::post('/edit', [CompanyController::class, 'edit']);
+    Route::delete('/delete', [CompanyController::class, 'delete']);
+
+    Route::post('/add_product', [CompanyController::class, 'addProduct']);
+    
+    Route::post('/product', [ProductController::class, 'index']);
+    Route::post('/product/add', [ProductController::class, 'add']);
+    Route::post('/product/edit', [ProductController::class, 'edit']);
+    Route::delete('/product/delete', [ProductController::class, 'delete']);
+    Route::post('/product/restore', [ProductController::class, 'restoreDelete']);
+
+});
 
 

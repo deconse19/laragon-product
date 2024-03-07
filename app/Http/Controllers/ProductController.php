@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductRequest\AddRequest;
-use App\Http\Requests\ProductRequest\EditRequest;
+use App\Http\Requests\CompanyRequest\ProductRequest\FindRequest;
+use App\Http\Requests\CompanyRequest\ProductRequest\AddRequest;
+use App\Http\Requests\CompanyRequest\ProductRequest\EditRequest;
 use App\Models\Product;
 
-use App\Http\Requests\ProductRequest\FindRequest;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -18,7 +18,6 @@ class ProductController extends Controller
             $query->where('name', 'LIKE', "%{$search}%")
                 ->orWhere('price', "%{$search}%")
                 ->orWhere('description', 'LIKE', "%{$search}%");
-               
         })->paginate($request->per_page ?? 15);
 
         return response()->json(
@@ -34,11 +33,13 @@ class ProductController extends Controller
         try {
 
             $list = Product::create([
+                'company_id' =>$request->company_id,
                 'name' => $request->name,
                 'price' => $request->price,
                 'description' => $request->description,
                 'category' => $request->category,
-               
+                'stock' => $request->stock,
+
             ]);
 
             return response()->json([
@@ -59,13 +60,14 @@ class ProductController extends Controller
         try {
             $list = Product::find($request->id);
 
-           $list = $list->update([
+            $list = $list->update([
+                'company_id' =>$request->company_id,
                 'name' => $request->name,
                 'price' => $request->price,
                 'description' => $request->description,
                 'category' => $request->category,
-                'confirmed' => $request->confirmed
-                
+                'stock' => $request->stock,
+
             ]);
 
             return response()->json([
@@ -108,10 +110,4 @@ class ProductController extends Controller
         ]);
     }
 
-    // public function showProducts()
-    // {
-
-    //     $list = Product::latest()->get();
-    //     return view("product.welcome", compact('list'));
-    // }
 }

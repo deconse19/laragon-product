@@ -19,6 +19,6 @@ class DepartmentController extends Controller
         return response()->json($user);
     }
 
-   
+    
 
 }

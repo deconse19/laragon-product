@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest\AddProductRequest;
+use App\Http\Requests\UserRequest\CheckOutRequest;
 use App\Http\Requests\UserRequest\CreateProfileRequest;
 use App\Http\Requests\UserRequest\DeleteProfileRequest;
 use App\Http\Requests\UserRequest\SearchRequest;
 use App\Models\Product;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserProfile;
-
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 
@@ -17,7 +19,7 @@ class UserController extends Controller
 
     public function searchUser(SearchRequest $request)
     {
-        $user = User::with('userProfile', 'department')->find($request->user_id);
+        $user = User::with('userProfile')->find($request->user_id);
 
         return response()->json($user);
     }
@@ -51,19 +53,27 @@ class UserController extends Controller
         ]);
     }
 
-    public function addProduct(AddProductRequest $request){
-        $user = User::findOrFail($request->user_id);
-       
-        $product_id = $request->product_id;
-        $user->product()->sync($product_id);
-        $product = Product::findOrFail($product_id);
+    public function purchase(CheckOutRequest $request)
+    {
+        $user = User::findOrFail(Auth::user()->id);
+        $product = Product::findOrFail($request->product_id);
 
-        return response()->json([$user,$product]);
+        $transaction = Transaction::updateOrCreate(
+            [
+                'user_id' => $user->id,
+                'product_id' => $product->id,
+            ],
+            [
+                'quantity' => $request->quantity,
+            ]
+        );
 
+        return response()->json([
+
+            'transaction' => $transaction
+        ]);
     }
-    // public function removeProduct(){
-    //     $user = User::findOrFail($request->user_id);
-
-    // }
 }
- 
+ // $product_id = $request->product_id;
+        // $user->transaction()->sync($product_id);
+        // $product = Product::findOrFail($product_id);

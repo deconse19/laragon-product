@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\UserRequest;
+namespace App\Http\Requests\CompanyRequest;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateProfileRequest extends FormRequest
+class AddCompanyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,13 +22,11 @@ class CreateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|numeric',
-            'name' => 'required',
-            'age' => 'required|numeric',
-            'gender' => 'required',
-            'address' => 'required',
-            'status' => 'required',
-            'phone' => 'numeric',
+           
+            'name' => 'nullable',
+        
+            'description' => 'nullable',
+            'location' =>'nullable'
         ];
     }
 }

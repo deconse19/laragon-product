@@ -18,7 +18,7 @@ class RegisterController extends Controller
         DB::beginTransaction();
         try {
             $user = User::create([
-                'department_id' => $request->department_id,
+
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => $request->password,
@@ -66,6 +66,16 @@ class RegisterController extends Controller
 
             ]);
         }
+    }
+    public function logout()
+    {
+
+        auth()->user()->token()->revoke();
+
+        return response()->json([
+            "status" => true,
+            "message" => "User logged out"
+        ]);
     }
     
 

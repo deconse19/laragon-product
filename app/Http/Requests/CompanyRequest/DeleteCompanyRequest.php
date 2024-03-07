@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\UserRequest;
+namespace App\Http\Requests\CompanyRequest;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddProductRequest extends FormRequest
+class DeleteCompanyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,7 @@ class AddProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|numeric',
-            'product_id' => 'required|array',
-            'product_id.*' => 'distinct'
+            //
         ];
     }
 }

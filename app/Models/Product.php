@@ -10,11 +10,13 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
+        'company_id',
         'name',
         'price',
         'description',
         'category',
-        'confirmed'
+        'stock'
+
     ];
 
     public function getNameAttribute($value)
@@ -32,17 +34,20 @@ class Product extends Model
         return $this->attributes['description'] = ucfirst($value);
     }
 
-    protected $casts=[
-
-        
+    protected $casts = [
 
     ];
 
-    public function user(){
-
-        return $this->belongsToMany(User::class);
-    }
-  
-   
     
+
+    public function company()
+    {
+
+        return $this->belongsTo(Company::class);
+    }
+
+    public function transaction(){
+
+        return $this->belongsTo(Transaction::class);
+    }
 }
